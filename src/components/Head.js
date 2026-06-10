@@ -6,12 +6,18 @@ import { YOUTUBE_SEARCH_API } from "../utils/constants";
 const Head = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(searchQuery);
   useEffect(()=>{
-  getSearchSuggestions();
-
+// that is all debouncing code
+    const timer = setTimeout(() => {
+      getSearchSuggestions();
+    }, 200);
+    return () => clearTimeout(timer);
   },[searchQuery])
+
+  //till here is debouncing code
+
   const getSearchSuggestions = async () => {
+  console.log("API CALL", searchQuery);
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
     console.log(json[1]);
@@ -40,8 +46,20 @@ dispatch(toggleMenu());
         </a>
       </div>
       <div className="col-span-10 px-10">
-        <input className="w-1/2 border border-gray-400 p-2 rounded-l-full" type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+        <div>
+        <input className="px-5 w-1/2 border border-gray-400 p-2 rounded-l-full" type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
         <button className="border border-gray-400 px-5 p-2 rounded-r-full bg-gray-100">🔍</button>
+        </div>
+        <div className="fixed bg-white py-2 px-5 w-[37rem] shadow-lg rounded-lg">
+          <ul>
+            <li className="py-2 shadow-sm">🔍 Iphone</li>
+            <li className="py-2 shadow-sm">🔍 Iphone</li>
+            <li className="py-2 shadow-sm">🔍 Iphone</li>
+            <li className="py-2 shadow-sm">🔍 Iphone</li>
+            <li className="py-2 shadow-sm">🔍 Iphone</li>
+            <li className="py-2 shadow-sm">🔍 Iphone</li>
+          </ul>
+        </div>
       </div>
       <div className="col-span-1">
         <img
